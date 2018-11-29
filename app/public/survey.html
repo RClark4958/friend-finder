@@ -191,3 +191,45 @@
             </div>
         </div>
     </div>
+
+    <script>
+    
+        var person = {};
+        $("#submit").on("click", () => {
+            grabAnswers();
+            if (person.name === "" || person.picture === "") return alert("You must provide both your name and a link to your photo.");
+            if (!validateAnswers()) return alert("You must answer all questions before proceeding");
+
+            $.post("/api/friends", person, response => {
+                console.log(response);
+                var compatibilityScore = 2.5 * (40 - response.difference);
+                var matches = response.matches;
+                $("#match-name").text(matches[0].name);
+                $("#match-img").attr("src", matches[0].picture);
+                $("#match-img").attr("alt", matches[0].name);
+                $("#compatibility-score").text(compatibilityScore);
+
+                if (matches.length > 1) {
+                    $("#additional-matches").html("<hr><h5>Multiple best matches found.</h5>");
+                    var newUl = $("<ul>");
+                    for (i = 1; i < matches.length; i++) {
+                        newUl.append($(`<li><h4>${matches[i].name}<h4></li>`));                        
+                    }
+                    $("#additional-matches").append(newUl);
+                }
+                $(".modal").modal({ backdrop: "static"});
+                $("input[type='text']").val("");
+                $("input[type='radio']").prop("checked", false);
+            });
+        });
+
+        function grabAnswers() {
+            person.name = $("#name").val().trim();
+            person.picture = $("#picture").val().trim();
+            person.answers = [];
+            for (i = 1; i < 11; i++) {
+                person.answers.push($(`input[name='q${i}']:checked`).val());
+            }
+        }
+
+    </script>
