@@ -232,4 +232,22 @@
             }
         }
 
+        function validateAnswers() {
+            for (i = 0; i < person.answers.length; i++) {
+                if (!person.answers[i]) return false;
+            }
+            return true;
+        }
+
     </script>
+
+<style>
+    #match-img {
+        height: 300px;
+        width: auto;
+    }
+</style>
+
+</body>
+
+</html>
