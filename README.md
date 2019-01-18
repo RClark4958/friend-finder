@@ -20,4 +20,4 @@ A quick and easy match-maker!
 
 ## Contributors
 
-RClark4958
+* RClark4958
